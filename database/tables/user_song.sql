@@ -29,3 +29,8 @@ create table public.user_song (
     )
 );
 
+insert into user_song (user_id, song_id)
+select
+  (select user_id from site_user where user_email = 'ron31416@gmail.com'),
+  (select song_id from song limit 1);
+

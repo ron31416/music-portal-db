@@ -1,7 +1,7 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop table public.song
+--drop table public.user_song_measure
 create table public.user_song_measure (
   user_song_measure_id  int         generated always as identity,
   user_id               int         not null,
@@ -27,4 +27,3 @@ create table public.user_song_measure (
       song_id
     )
 );
-

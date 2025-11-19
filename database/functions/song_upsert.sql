@@ -17,7 +17,7 @@ as $$
 declare
     v_song_id int;
 begin
-    IF p_song_id is null then
+    if p_song_id is null then
         insert into public.song (
             song_title,
             composer_first_name,
