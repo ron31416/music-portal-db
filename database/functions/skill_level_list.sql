@@ -7,14 +7,18 @@ returns table (
     skill_level_number  int,
     skill_level_name    text
 )
+language plpgsql
+stable
 as $$
+begin
     select
-      skill_level_number, 
-      skill_level_name
-    from  public.skill_level
+      sl.skill_level_number, 
+      sl.skill_level_name
+    from  public.skill_level as sl
     order by
-      skill_level_number;
-$$ language sql stable;
+      sl.skill_level_number;
+end
+$$;
 
 revoke all on function public.skill_level_list()
   from public, authenticated, anon;

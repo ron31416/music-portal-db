@@ -7,14 +7,18 @@ returns table (
     user_role_number integer,
     user_role_name text
 )
+language plpgsql
+stable
 as $$
+begin
     select
-      user_role_number, 
-      user_role_name
-    from  public.user_role
+      ur.user_role_number, 
+      ur.user_role_name
+    from  public.user_role as ur
     order by
-      user_role_number;
-$$ language sql stable;
+      ur.user_role_number;
+end
+$$;
 
 revoke all on function public.user_role_list()
   from public, authenticated, anon;
