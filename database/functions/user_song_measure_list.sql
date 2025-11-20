@@ -18,10 +18,10 @@ as $$
 begin
     return query
     select
-        measure_number,
-        annotations_json,
-        inserted_datetime,
-        updated_datetime
+        usm.measure_number,
+        usm.annotations_json,
+        usm.inserted_datetime,
+        usm.updated_datetime
     from  public.user_song_measure as usm
     where usm.user_id = p_user_id and
           usm.song_id = p_song_id
