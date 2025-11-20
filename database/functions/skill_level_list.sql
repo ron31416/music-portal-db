@@ -11,6 +11,7 @@ language plpgsql
 stable
 as $$
 begin
+    return query
     select
       sl.skill_level_number, 
       sl.skill_level_name
