@@ -13,5 +13,5 @@ order by t.table_name;
 
 
 
-$last = Get-ChildItem .\database\scripts\db_backups\backup_*.dump | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$last = Get-ChildItem .\database\backups\backup_*.dump | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 .\database\scripts\restore-db.ps1 $last.FullName

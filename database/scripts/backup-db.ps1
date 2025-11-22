@@ -1,4 +1,7 @@
-param([string]$OutDir = (Join-Path $PSScriptRoot 'db_backups'))
+param(
+    [string]$OutDir = (Join-Path (Join-Path $PSScriptRoot '..') 'backups')
+)
+
 
 . "$PSScriptRoot\db-env.ps1"
 
