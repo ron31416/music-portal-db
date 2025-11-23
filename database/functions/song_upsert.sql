@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.song_upsert(int,text,text,text,int,text,bytea)
-create function public.song_upsert(
+create or replace function public.song_upsert(
     p_song_id               int,
     p_song_title            text,
     p_composer_first_name   text,

@@ -3,3 +3,6 @@
 
 # database files
 database/backups/
+
+# database connections
+.vscode/settings.json

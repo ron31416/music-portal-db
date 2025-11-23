@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.user_list(text, text);
-create function public.user_list(
+create or replace function public.user_list(
   p_sort_column     text default 'user_email',
   p_sort_direction  text default 'asc'
 )

@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.user_song_measure_update(int, int, smallint, jsonb)
-create function public.user_song_measure_update(
+create or replace function public.user_song_measure_update(
   p_user_id          int,
   p_song_id          int,
   p_measure_number   smallint,

@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.user_song_insert(int,int)
-create function public.user_song_insert(
+create or replace function public.user_song_insert(
   p_user_id         int,
   p_song_id         int
 )

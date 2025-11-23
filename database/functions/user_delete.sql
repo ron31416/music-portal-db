@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.user_delete(int);
-create function public.user_delete(
+create or replace function public.user_delete(
   p_user_id int
 )
 returns int

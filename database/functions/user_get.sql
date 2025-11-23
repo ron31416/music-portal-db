@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function if exists public.user_get(int, text);
-create function public.user_get(
+create or replace function public.user_get(
   p_user_id    int   default null,
   p_user_email text  default null
 )

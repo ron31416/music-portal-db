@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop function public.user_upsert(int, text, text, text, int);
-create function public.user_upsert(
+create or replace function public.user_upsert(
   p_user_id           int,
   p_user_email        text,
   p_user_first_name   text,
