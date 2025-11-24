@@ -1,10 +1,31 @@
---do $$begin raise exception 'do not run this file'; end$$;
 
 begin;
 
+do $$
+declare
+  v_system_environment_name text;
+begin
+  select system_environment_name
+  into v_system_environment_name
+  from public.system_environment
+  limit 1;
+
+  if v_system_environment_name is null then
+    raise exception 'Guard failed: public.system_environment is empty or missing';
+  end if;
+
+  if v_system_environment_name <> 'music-portal-prod' then
+    raise exception 'This script is only for the music-portal-staging database (found %)',
+      v_system_environment_name;
+  end if;
+end
+$$ language plpgsql;
+
 --on each cluster (dev, staging, prod)
-create schema host;
-create table host.cluster (
+create schema system_cluster;
+create schema music_portal;
+
+create table system_cluster.cluster (
     cluster_id          smallint    default 1,
     cluster_name        text        not null,
     cluster_url         text        not null,
@@ -27,36 +48,9 @@ create table host.cluster (
         (cluster_id = 1)
 );
 
--- on dev cluster
--- insert one row ('dev')
-insert into host.cluster (
-    cluster_name,
-    cluster_url,
-    inet_addr
-)
-    values (
-        'dev', 
-        'db.arxvzfwzjbzwgirzaekn.supabase.co', 
-        '2600:1f16:1cd0:3328:16fc:820a:48c5:b1ca'
-);
-
-/*
--- on staging cluster
--- insert one row ('staging')
-insert into host.cluster (
-    cluster_name,
-    cluster_url,
-    inet_addr
-)
-    values (
-        'staging', 
-        'db.egmodwcvdsyqcbnropoo.supabase.co', 
-        '2600:1f18:2e13:9d2d:157a:c41d:ac2a:c532'
-);
-
 -- on prod cluster
 -- insert one row ('prod')
-insert into host.cluster (
+insert into system_cluster.cluster (
     cluster_name,
     cluster_url,
     inet_addr
@@ -66,10 +60,9 @@ insert into host.cluster (
         'db.nmqyrqgrasiqmbdsiefe.supabase.co', 
         '2600:1f16:1cd0:3328:1159:35d8:5d29:739a'
 );
-*/
 
 -- on each cluster (dev, staging, prod)
-create table host.cluster_schema (
+create table system_cluster.cluster_schema (
     cluster_schema_id   int         generated always as identity,
     cluster_name        text        not null,
     schema_name         text        not null,
@@ -85,53 +78,14 @@ create table host.cluster_schema (
     constraint fk00_cluster foreign key (
         cluster_name
     )
-        references host.cluster (
+        references system_cluster.cluster (
             cluster_name
-        )
-);
-
--- on dev cluster
--- insert one row per schema ('music_portal', 'media_hub')
-insert into host.cluster_schema (
-    cluster_name,
-    schema_name
-)
-values (
-    'dev',
-    'music_portal'
-);
-insert into host.cluster_schema (
-    cluster_name,
-    schema_name
-)
-    values (
-        'dev',
-        'media_hub'
-);
-
-/*
--- on staging cluster
--- insert one row per schema ('music_portal', 'media_hub')
-insert into host.cluster_schema (
-    cluster_name,
-    schema_name
-)
-    values (
-        'staging',
-        'music_portal'
-);
-insert into host.cluster_schema (
-    cluster_name,
-    schema_name
-)
-    values (
-        'staging',
-        'media_hub'
+    )
 );
 
 -- on prod cluster
--- insert one row per schema ('music_portal', 'media_hub')
-insert into host.cluster_schema (
+-- insert one row per schema ('music_portal')
+insert into system_cluster.cluster_schema (
     cluster_name,
     schema_name
 )
@@ -139,18 +93,8 @@ insert into host.cluster_schema (
         'prod',
         'music_portal'
 );
-insert into host.cluster_schema (
-    cluster_name,
-    schema_name
-)
-    values (
-        'prod',
-        'media_hub'
-);
-*/
 
 -- on each cluster (dev, staging, prod)
-create schema music_portal;
 create table music_portal.cluster_schema (
     cluster_schema_id   int         default 1,
     cluster_name        text        not null,
@@ -164,7 +108,7 @@ create table music_portal.cluster_schema (
         cluster_name,
         schema_name
     )
-        references host.cluster_schema (
+        references system_cluster.cluster_schema (
             cluster_name,
             schema_name
     ),
@@ -172,31 +116,30 @@ create table music_portal.cluster_schema (
         (cluster_schema_id = 1)
 );
 
--- on dev cluster in media_portal schema
--- insert one row ('dev'|'music_portal')
+-- on prod cluster in media_portal schema
+-- insert one row ('prod'|'music_portal')
 insert into music_portal.cluster_schema (
     cluster_name,
     schema_name
 )
     values (
-        'dev',
+        'prod',
         'music_portal'
 );
 
---one row ('dev')
-select * from host.cluster; 
---one row per schema ('music_portal', 'media_hub')              
-select * from host.cluster_schema; 
---one row ('dev'|'music_portal')         
-select * from music_portal.cluster_schema;  
-
+create or replace view music_portal.v_cluster_schema as
 select
-    c.cluster_name,
-    c.cluster_url,
-    c.inet_addr,
-    cs.schema_name
-from  music_portal.cluster_schema as cs
- join host.cluster                as c
+    c.cluster_name      as cluster_name,
+    c.cluster_url       as cluster_url,
+    c.inet_addr         as inet_addr,
+    cs.schema_name      as schema_name
+from  music_portal.cluster_schema   as cs
+ join system_cluster.cluster        as c
    on cs.cluster_name = c.cluster_name;
 
+select * from music_portal.v_cluster_schema;
+
+drop table public.system_environment;
+
 rollback;
+--commit;
