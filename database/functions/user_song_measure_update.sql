@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.user_song_measure_update(int, int, smallint, jsonb)
-create or replace function public.user_song_measure_update(
+--drop function music_portal.user_song_measure_update(int, int, smallint, jsonb);
+create or replace function music_portal.user_song_measure_update(
   p_user_id          int,
   p_song_id          int,
   p_measure_number   smallint,
@@ -14,7 +14,7 @@ as $$
 declare
     v_user_song_measure_id int;
 begin
-    update public.user_song_measure as usm
+    update music_portal.user_song_measure as usm
     set
         annotations_json = p_annotations_json,
         updated_datetime = now()
@@ -33,8 +33,5 @@ begin
     return v_user_song_measure_id;
 end
 $$;
-
-revoke all on function public.user_song_measure_update(int, int, smallint, jsonb)
-  from public, authenticated, anon;
-grant execute on function public.user_song_measure_update(int, int, smallint, jsonb)
-  to service_role;
+revoke all on function music_portal.user_song_measure_update(int, int, smallint, jsonb) from public, authenticated, anon;
+grant execute on function music_portal.user_song_measure_update(int, int, smallint, jsonb) to service_role;

@@ -96,3 +96,6 @@ create table cluster_schema (
         )
 );
 
+drop function public.user_song_measure_annotations_json_get(int, int, smallint)
+
+SELECT pg_get_functiondef((SELECT oid FROM pg_proc WHERE proname = 'user_song_measure_annotations_json_get'));

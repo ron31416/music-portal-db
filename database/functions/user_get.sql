@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function if exists public.user_get(int, text);
-create or replace function public.user_get(
+--drop function if exists music_portal.user_get(int, text);
+create or replace function music_portal.user_get(
   p_user_id    int   default null,
   p_user_email text  default null
 )
@@ -42,8 +42,8 @@ begin
       ur.user_role_name,
       u.inserted_datetime, 
       u.updated_datetime
-    from public.site_user as u
-    join public.user_role as ur
+    from music_portal.site_user as u
+    join music_portal.user_role as ur
       on ur.user_role_number = u.user_role_number
     where u.user_id = p_user_id
     limit 1;
@@ -63,15 +63,12 @@ begin
     ur.user_role_name,
     u.inserted_datetime, 
     u.updated_datetime
-  from public.site_user as u
-  join public.user_role as ur
+  from music_portal.site_user as u
+  join music_portal.user_role as ur
     on ur.user_role_number = u.user_role_number
   where u.user_email = v_user_email
   limit 1;
 end
 $$;
-
-revoke all on function public.user_get(int, text)
-  from public, authenticated, anon;
-grant execute on function public.user_get(int, text)
-  to service_role;
+revoke all on function music_portal.user_get(int, text) from public, authenticated, anon;
+grant execute on function music_portal.user_get(int, text) to service_role;

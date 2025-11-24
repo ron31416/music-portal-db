@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop table public.user_role;
-create table public.user_role (
+--drop table music_portal.user_role;
+create table music_portal.user_role (
   user_role_id      int         generated always as identity,
   user_role_number  int         not null,
   user_role_name    text        not null,
@@ -19,7 +19,7 @@ create table public.user_role (
   )
 );
 
-insert into public.user_role (user_role_number, user_role_name) values (1, 'Admin');
-insert into public.user_role (user_role_number, user_role_name) values (2, 'Student');
-insert into public.user_role (user_role_number, user_role_name) values (3, 'Guest');
+insert into music_portal.user_role (user_role_number, user_role_name) values (1, 'Admin');
+insert into music_portal.user_role (user_role_number, user_role_name) values (2, 'Student');
+insert into music_portal.user_role (user_role_number, user_role_name) values (3, 'Guest');
 

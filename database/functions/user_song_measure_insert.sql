@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.user_song_measure_insert(int, int, smallint, jsonb);
-create or replace function public.user_song_measure_insert(
+--drop function music_portal.user_song_measure_insert(int, int, smallint, jsonb);
+create or replace function music_portal.user_song_measure_insert(
   p_user_id          int,
   p_song_id          int,
   p_measure_number   smallint,
@@ -14,7 +14,7 @@ as $$
 declare
     v_user_song_measure_id int;
 begin
-    insert into public.user_song_measure (
+    insert into music_portal.user_song_measure (
         user_id,
         song_id,
         measure_number,
@@ -30,8 +30,5 @@ begin
     return v_user_song_measure_id;
 end
 $$;
-
-revoke all on function public.user_song_measure_insert(int, int, smallint, jsonb)
-  from public, authenticated, anon;
-grant execute on function public.user_song_measure_insert(int, int, smallint, jsonb)
-  to service_role;
+revoke all on function music_portal.user_song_measure_insert(int, int, smallint, jsonb) from public, authenticated, anon;
+grant execute on function music_portal.user_song_measure_insert(int, int, smallint, jsonb) to service_role;

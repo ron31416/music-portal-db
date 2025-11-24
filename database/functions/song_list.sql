@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.song_list(text, text);
-create or replace function public.song_list(
+--drop function music_portal.song_list(text, text);
+create or replace function music_portal.song_list(
   p_sort_column     text default 'composer_last_name',
   p_sort_direction  text default 'asc'
 )
@@ -43,7 +43,7 @@ begin
     when 'file_name' then
       order_clause := format('s.file_name %s', p_sort_direction);
     else
-      order_clause := format('s.composer_last_name %s, s.composer_first_name ASC, s.song_title ASC, s.skill_level_number ASC'), p_sort_direction;
+      order_clause := format('s.composer_last_name %s, s.composer_first_name ASC, s.song_title ASC, s.skill_level_number ASC', p_sort_direction);
   end case;
   return query execute format(
     'select
@@ -56,16 +56,13 @@ begin
        s.file_name,
        s.inserted_datetime,
        s.updated_datetime
-     from  public.song as s
-      join public.skill_level as sl
+     from  music_portal.song as s
+      join music_portal.skill_level as sl
         on sl.skill_level_number = s.skill_level_number
      order by %s', order_clause
   );
 end
 $$;
-
-revoke all on function public.song_list(text, text)
-  from public, authenticated, anon;
-grant execute on function public.song_list(text, text)
-  to service_role;
+revoke all on function music_portal.song_list(text, text) from public, authenticated, anon;
+grant execute on function music_portal.song_list(text, text) to service_role;
 

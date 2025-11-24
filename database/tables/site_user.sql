@@ -2,7 +2,7 @@ do $$begin raise exception 'do not run this file'; end$$;
 
 
 --drop table public.site_user;
-create table public.site_user (
+create table music_portal.site_user (
   user_id           int         generated always as identity,
   user_email        text        not null,
   user_first_name   text        not null,
@@ -33,5 +33,5 @@ create table public.site_user (
   )
 );
 
-insert into public.site_user (user_email, user_first_name, user_last_name, user_role_number)
+insert into music_portal.site_user (user_email, user_first_name, user_last_name, user_role_number)
     values ('ron31416x@gmail.com', 'Ron', 'Rice', 1);

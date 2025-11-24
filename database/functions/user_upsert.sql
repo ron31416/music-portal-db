@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.user_upsert(int, text, text, text, int);
-create or replace function public.user_upsert(
+--drop function music_portal.user_upsert(int, text, text, text, int);
+create or replace function music_portal.user_upsert(
   p_user_id           int,
   p_user_email        text,
   p_user_first_name   text,
@@ -24,7 +24,7 @@ begin
     raise exception 'User first name is required' using errcode = '22000';
   end if;
   if p_user_id is null then
-    insert into public.site_user (
+    insert into music_portal.site_user (
       user_email,
       user_first_name,
       user_last_name,
@@ -39,7 +39,7 @@ begin
     returning user_id into v_user_id;
     return v_user_id;
   else
-    update public.site_user
+    update music_portal.site_user
     set user_email       = v_user_email,
         user_first_name  = v_user_first_name,
         user_last_name   = v_user_last_name,
@@ -51,14 +51,10 @@ begin
       return p_user_id;
     else
       raise exception 'user_id % not found', p_user_id
-        using errcode = 'p0002'; -- no_data_found
+        using errcode = 'P0002'; -- no_data_found
     end if;
   end if;
 end
 $$;
-
-revoke all on function public.user_upsert(int, text, text, text, int) 
-  from public, authenticated, anon;
-grant execute on function public.user_upsert(int, text, text, text, int) 
-  to service_role;
-
+revoke all on function music_portal.user_upsert(int, text, text, text, int) from public, authenticated, anon;
+grant execute on function music_portal.user_upsert(int, text, text, text, int) to service_role;

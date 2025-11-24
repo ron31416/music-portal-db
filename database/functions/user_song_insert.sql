@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.user_song_insert(int,int)
-create or replace function public.user_song_insert(
+--drop function music_portal.user_song_insert(int,int)
+create or replace function music_portal.user_song_insert(
   p_user_id         int,
   p_song_id         int
 )
@@ -12,7 +12,7 @@ as $$
 declare
     v_user_song_id int;
 begin
-    insert into public.user_song (
+    insert into music_portal.user_song (
         user_id,
         song_id
     )
@@ -24,10 +24,7 @@ begin
     return v_user_song_id;
 end
 $$;
-
-revoke all on function public.user_song_insert(int, int)
-  from public, authenticated, anon;
-grant execute on function public.user_song_insert(int,int)
-  to service_role;
+revoke all on function music_portal.user_song_insert(int, int) from public, authenticated, anon;
+grant execute on function music_portal.user_song_insert(int,int) to service_role;
 
 

@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.user_list(text, text);
-create or replace function public.user_list(
+--drop function music_portal.user_list(text, text);
+create or replace function music_portal.user_list(
   p_sort_column     text default 'user_email',
   p_sort_direction  text default 'asc'
 )
@@ -55,16 +55,13 @@ begin
        ur.user_role_name,
        u.inserted_datetime,
        u.updated_datetime
-     from public.site_user as u
-     join public.user_role as ur
+     from music_portal.site_user as u
+     join music_portal.user_role as ur
        on ur.user_role_number = u.user_role_number
      order by %s', order_clause
   );
 end
 $$;
-
-revoke all on function public.user_list(text, text) 
-  from public, authenticated, anon;
-grant execute on function public.user_list(text, text) 
-  to service_role;
+revoke all on function music_portal.user_list(text, text) from public, authenticated, anon;
+grant execute on function music_portal.user_list(text, text) to service_role;
 

@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop table public.song
-create table public.user_song (
+--drop table music_portal.song
+create table music_portal.user_song (
   user_song_id        int         generated always as identity,
   user_id             int         not null,
   song_id             int         not null,
@@ -18,13 +18,13 @@ create table public.user_song (
   constraint fk00_user_song foreign key (
     user_id
   )
-    references public.site_user (
+    references music_portal.site_user (
       user_id
     ),
   constraint fk01_user_song foreign key (
     song_id
   )
-    references public.song (
+    references music_portal.song (
       song_id
     )
 );

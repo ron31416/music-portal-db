@@ -1,8 +1,8 @@
 do $$begin raise exception 'do not run this file'; end$$;
 
 
---drop function public.song_upsert(int,text,text,text,int,text,bytea)
-create or replace function public.song_upsert(
+--drop function music_portal.song_upsert(int, text, text, text, int, text, bytea)
+create or replace function music_portal.song_upsert(
     p_song_id               int,
     p_song_title            text,
     p_composer_first_name   text,
@@ -18,7 +18,7 @@ declare
     v_song_id int;
 begin
     if p_song_id is null then
-        insert into public.song (
+        insert into music_portal.song (
             song_title,
             composer_first_name,
             composer_last_name,
@@ -37,7 +37,7 @@ begin
         returning song_id into v_song_id;
         return v_song_id;
     else
-        update public.song
+        update music_portal.song
         set
             song_title           = p_song_title,
             composer_first_name  = p_composer_first_name,
@@ -56,9 +56,6 @@ begin
     end if;
 end
 $$;
-
-revoke all on function public.song_upsert(int, text, text, text, int, text, bytea)
-  from public, authenticated, anon;
-grant execute on function public.song_upsert(int, text, text, text, int, text, bytea)
-  to service_role;
+revoke all on function music_portal.song_upsert(int, text, text, text, int, text, bytea) from public, authenticated, anon;
+grant execute on function music_portal.song_upsert(int, text, text, text, int, text, bytea) to service_role;
 
