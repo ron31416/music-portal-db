@@ -25,7 +25,7 @@ begin
     on conflict (user_id, song_id)
     do update
       set updated_datetime = now()
-    returning user_song_measure_id
+    returning user_song_id
       into v_user_song_id;
 
     return v_user_song_id;
