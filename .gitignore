@@ -3,6 +3,7 @@
 
 # database files
 database/backups/
+database/queries/
 
 # database connections
 .vscode/
