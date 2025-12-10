@@ -10,12 +10,13 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 begin
     return query
     select 
       s.song_mxl
-    from  music_portal.song as s
+    from song as s
     where s.song_id = p_song_id;
 end
 $$;

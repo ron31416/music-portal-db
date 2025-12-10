@@ -8,11 +8,12 @@ create or replace function music_portal.user_song_upsert(
 )
 returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
     v_user_song_id int;
 begin
-    insert into music_portal.user_song (
+    insert into user_song (
         user_id,
         song_id
     )

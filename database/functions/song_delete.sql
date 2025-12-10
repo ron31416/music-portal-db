@@ -7,12 +7,14 @@ create or replace function music_portal.song_delete(
 )
 returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
   v_count int;
 begin
-  delete from music_portal.song as s
-    where s.song_id = p_song_id;
+  delete 
+  from song as s
+  where s.song_id = p_song_id;
   get diagnostics v_count = row_count;
   return v_count;
 end

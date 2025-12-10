@@ -14,6 +14,7 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 begin
     return query
@@ -22,7 +23,7 @@ begin
         usm.annotations_json,
         usm.inserted_datetime,
         usm.updated_datetime
-    from  music_portal.user_song_measure as usm
+    from user_song_measure as usm
     where usm.user_id = p_user_id and
           usm.song_id = p_song_id
     order by usm.measure_number;

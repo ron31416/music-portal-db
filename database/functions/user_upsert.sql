@@ -10,6 +10,7 @@ create or replace function music_portal.user_upsert(
   p_user_role_number  int
 ) returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
   v_user_id            int;
@@ -24,7 +25,7 @@ begin
     raise exception 'User first name is required' using errcode = '22000';
   end if;
   if p_user_id is null then
-    insert into music_portal.site_user (
+    insert into site_user (
       user_email,
       user_first_name,
       user_last_name,
@@ -39,14 +40,13 @@ begin
     returning user_id into v_user_id;
     return v_user_id;
   else
-    update music_portal.site_user
+    update site_user
     set user_email       = v_user_email,
         user_first_name  = v_user_first_name,
         user_last_name   = v_user_last_name,
         user_role_number = p_user_role_number,
         updated_datetime = now()
     where user_id = p_user_id;
-
     if found then
       return p_user_id;
     else

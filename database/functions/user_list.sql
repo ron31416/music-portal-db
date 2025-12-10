@@ -18,6 +18,7 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 declare
   v_sort_column    text := lower(coalesce(p_sort_column, 'user_email'));
@@ -55,8 +56,8 @@ begin
        ur.user_role_name,
        u.inserted_datetime,
        u.updated_datetime
-     from music_portal.site_user as u
-     join music_portal.user_role as ur
+     from site_user as u
+     join user_role as ur
        on ur.user_role_number = u.user_role_number
      order by %s', order_clause
   );

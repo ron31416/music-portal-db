@@ -9,13 +9,14 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 begin
     return query
     select
       ur.user_role_number, 
       ur.user_role_name
-    from  music_portal.user_role as ur
+    from user_role as ur
     order by
       ur.user_role_number;
 end

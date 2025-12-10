@@ -7,12 +7,15 @@ create or replace function music_portal.user_delete(
 )
 returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
   v_count int;
 begin
-  delete from music_portal.site_user
-  where user_id = p_user_id;
+  delete 
+  from site_user as su
+  where
+    su.user_id = p_user_id;
   get diagnostics v_count = row_count;
   return v_count;
 end

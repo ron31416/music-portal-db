@@ -10,11 +10,12 @@ create or replace function music_portal.user_song_measure_upsert(
 )
 returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
     v_user_song_measure_id int;
 begin
-    insert into music_portal.user_song_measure (
+    insert into user_song_measure (
         user_id,
         song_id,
         measure_number,
@@ -32,7 +33,6 @@ begin
           updated_datetime = now()
     returning user_song_measure_id
       into v_user_song_measure_id;
-
     return v_user_song_measure_id;
 end
 $$;

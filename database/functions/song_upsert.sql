@@ -13,12 +13,13 @@ create or replace function music_portal.song_upsert(
 )
 returns int
 language plpgsql
+set search_path = music_portal
 as $$
 declare
     v_song_id int;
 begin
     if p_song_id is null then
-        insert into music_portal.song (
+        insert into song (
             song_title,
             composer_first_name,
             composer_last_name,
@@ -37,7 +38,7 @@ begin
         returning song_id into v_song_id;
         return v_song_id;
     else
-        update music_portal.song
+        update song
         set
             song_title           = p_song_title,
             composer_first_name  = p_composer_first_name,

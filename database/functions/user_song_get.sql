@@ -15,6 +15,7 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 begin
   return query
@@ -24,7 +25,7 @@ begin
     us.song_id,
     us.inserted_datetime,
     us.updated_datetime
-  from music_portal.user_song as us
+  from user_song as us
   where us.user_id = p_user_id
     and us.song_id = p_song_id;
 end

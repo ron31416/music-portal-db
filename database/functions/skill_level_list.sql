@@ -9,13 +9,14 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 begin
     return query
     select
       sl.skill_level_number, 
       sl.skill_level_name
-    from  music_portal.skill_level as sl
+    from skill_level as sl
     order by
       sl.skill_level_number;
 end

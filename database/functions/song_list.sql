@@ -19,6 +19,7 @@ returns table (
 )
 language plpgsql
 stable
+set search_path = music_portal
 as $$
 declare
   order_clause text;
@@ -56,9 +57,9 @@ begin
        s.file_name,
        s.inserted_datetime,
        s.updated_datetime
-     from  music_portal.song as s
-      join music_portal.skill_level as sl
-        on sl.skill_level_number = s.skill_level_number
+     from song as s
+     join skill_level as sl
+       on sl.skill_level_number = s.skill_level_number
      order by %s', order_clause
   );
 end
